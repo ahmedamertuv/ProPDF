@@ -1,7 +1,9 @@
 from PyPDF2 import PdfReader, PdfWriter
 from openpyxl import Workbook
 import re
+import os
 
+OUTPUT_DIR = "./output"
 
 reader = PdfReader("Egypt foods - TQM Certificates.pdf")
 wb = Workbook()
@@ -41,4 +43,15 @@ for page in reader.pages:
             company_name,
         ]
     )
+
+    writer = PdfWriter()
+    writer.add_page(page)
+
+    try:
+        writer.write(f"./{OUTPUT_DIR}/{certificate_code[0]}.pdf")
+    except:
+        os.mkdir(OUTPUT_DIR)
+        writer.write(f"./{OUTPUT_DIR}/{certificate_code[0]}.pdf")
+
+
 wb.save("final.xlsx")
