@@ -17,6 +17,7 @@ def writePDF(filename, page_or_file, output="output"):
         os.mkdir(output)
         writer.write(f"./{output}/{filename}.pdf")
 
+    return os.path.join(os.getcwd(), output)
 
 
 def main():
@@ -35,6 +36,7 @@ def main():
         "certificate_field",
         "issue_date",
         "company_name",
+        "file_path",
     ]
 
     ws.append(titles)
@@ -61,6 +63,8 @@ def main():
                 certificate_field,
                 issue_date,
                 company_name,
+                certificate_dir,
+            ]
         )
 
     wb.save("final.xlsx")
