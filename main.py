@@ -4,7 +4,7 @@ import re
 import os
 
 
-def writePDF(filename, page_or_file, output="output"):
+def writePDF(filename, page_or_file, output_dir="output"):
     writer = PdfWriter()
     writer.add_page(page_or_file)
 
@@ -12,12 +12,12 @@ def writePDF(filename, page_or_file, output="output"):
         filename = filename[:-4]
 
     try:
-        writer.write(f"./{output}/{filename}.pdf")
+        writer.write(f"./{output_dir}/{filename}.pdf")
     except:
-        os.mkdir(output)
-        writer.write(f"./{output}/{filename}.pdf")
+        os.mkdir(output_dir)
+        writer.write(f"./{output_dir}/{filename}.pdf")
 
-    return os.path.join(os.getcwd(), output)
+    return os.path.join(os.getcwd(), output_dir)
 
 
 def main():
