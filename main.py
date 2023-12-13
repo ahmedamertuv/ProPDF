@@ -2,6 +2,7 @@ from PyPDF2 import PdfReader, PdfWriter
 from openpyxl import Workbook
 import re
 import os
+import sys
 
 
 def writePDF(filename, page_or_file, output_dir="output"):
@@ -20,8 +21,8 @@ def writePDF(filename, page_or_file, output_dir="output"):
     return os.path.join(os.getcwd(), output_dir)
 
 
-def main():
-    reader = PdfReader("Egypt foods - TQM Certificates.pdf")
+def main(input_file, xlsx_output_file, output_dir):
+    reader = PdfReader(input_file)
 
     wb = Workbook()
     ws = wb.active
@@ -55,7 +56,7 @@ def main():
         exp = re.compile(r"\b[A-Z]{2}-[A-Z]{3}-\d{3}-\d{4}-\d{2}\b")
         certificate_code = exp.findall(text)
 
-        certificate_dir = writePDF(certificate_code[0], page)
+        certificate_dir = writePDF(certificate_code[0], page, output_dir)
         ws.append(
             [
                 certificate_holder[0],
@@ -67,8 +68,15 @@ def main():
             ]
         )
 
-    wb.save("final.xlsx")
+    wb.save(xlsx_output_file)
 
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) == 3:
+        main(sys.argv[1], sys.argv[2], "./output")
+    elif len(sys.argv) == 4:
+        main(sys.argv[1], sys.argv[2], sys.argv[3])
+    else:
+        print(
+            "python main.py <input_pdf_file> <xlsx_out_put_file_name> <output_dir (optional)>"
+        )
